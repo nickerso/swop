@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>PMR Plugin Search</title>
+
+<meta name="author" content="Jagir Hussan, Auckland Bioengineering Institute">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.css" />
+
+</head>
+<body>
+
+<div class="container" id="errorpage" >
+<div class="span12">      
+<h3>Checking for Cross domain calling support by your browser!</h3>
+The service uses cross domain calls. If the current browser configuration does not allows for this, the search page will not load.
+<p>You need to change this security constraint, to use this service!</p>
+<p>
+Google Chrome users can install "Allow-Control-Allow-Origin: *" extension to help change this security constraint.
+</p>
+</div>
+</div>
+
+	<div class="container-fluid" id="main" style="display:none">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="jumbotron">
+					<h2>Find my Plugin</h2>
+					<p>Search among MAP, CTK and openCOR Plugins that have been
+						made available for collaboration among the community.</p>
+
+				</div>
+
+				<form class="form-horizontal" id="queryform">
+					<fieldset>
+
+						<!-- Form Name -->
+						<legend>Search</legend>
+
+						<!-- Search input-->
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="title">Title
+								has</label>
+							<div class="col-md-4">
+								<input id="title" name="title" type="search" placeholder=""
+									class="form-control input-md">
+								<p class="help-block">Find plugins which contain the above
+									text</p>
+							</div>
+						</div>
+
+						<!-- Text input-->
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="descinput">Description
+								has</label>
+							<div class="col-md-4">
+								<input id="descinput" name="descinput" type="text"
+									placeholder="" class="form-control input-md"> <span
+									class="help-block">Find plugins whose description
+									contains the text</span>
+							</div>
+						</div>
+
+						<!-- Select Basic -->
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="plugintype">Plugin
+								Type</label>
+							<div class="col-md-4">
+								<select id="plugintype" name="plugintype" class="form-control">
+									<option value="">Any</option>
+									<option value="http://www.ebi.ac.uk/swo/EXTENSIONS/MAPClient-Plugin-API">MAP Client Plugin</option>
+									<option value="http://www.ebi.ac.uk/swo/EXTENSIONS/CTKPlugin-API">CTK Plugin</option>
+								</select>
+							</div>
+						</div>
+
+						<!-- Select Basic -->
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="Interface">User
+								Interface Type</label>
+							<div class="col-md-4">
+								<select id="interface" name="interface" class="form-control">
+									<option value="">Any</option>
+									<option value="http://www.ebi.ac.uk/swo/interface/SWO_5000003">Graphical User Interface</option>
+									<option value="http://www.ebi.ac.uk/swo/interface/SWO_9000054">Application Programming Interface</option>
+									<option value="http://www.ebi.ac.uk/swo/interface/SWO_9000053">Command Line Interface</option>
+								</select>
+							</div>
+						</div>
+
+						<!-- Select Basic -->
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="license">License
+								Type</label>
+							<div class="col-md-4">
+								<select id="license" name="license" class="form-control">
+									<option value="">Any</option>
+									<option value="http://www.ebi.ac.uk/swo/license/SWO_1000005">Apache license v2</option>
+									<option value="http://abi.auckland.ac.nz/license/MedTech">MedTech CORE license</option>
+									<option value="http://www.ebi.ac.uk/swo/license/SWO_1000006">Academic Free License</option>
+									<option value="http://www.ebi.ac.uk/swo/license/SWO_1000007">Free BSD License</option>
+									<option value="http://www.ebi.ac.uk/swo/license/SWO_1000043">GNU General Public License</option>
+									<option value="http://www.ebi.ac.uk/swo/license/SWO_1000055">Mozilla Public License</option>
+									<option value="http://www.ebi.ac.uk/swo/license/SWO_1000002">Proprietary</option>
+								</select>
+							</div>
+						</div>
+
+						<!-- Button (Double) -->
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="query"></label>
+							<div class="col-md-8">
+								<button id="query" name="query" class="btn btn-success">Query</button>
+								<button id="reset" name="reset" type=reset
+									class="btn btn-inverse">Reset</button>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+
+
+
+				<div id="tableContainer" style="display: none">
+					<table id="table" class="table table-striped" data-toggle="table" data-toolbar="#toolbar"
+						data-height="460">
+						<thead>
+							<tr>
+								<th data-field="id"></th>
+								<th data-field="title">Title</th>
+								<th data-field="type">Plugin Type</th>
+								<th data-field="license">License</th>
+								<th data-field="iface">Interface Type</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+<div class="modal fade" id="descriptionPopup">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Description</h4>
+      </div>
+      <div class="modal-body">
+        <div id="pluginDetails"></div>
+        <div><b>Workspace location:</b> <div id="pluginItems"></div></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+
+	<script>
+		var $table = $('#table'), $query = $('#query'), $reset = $('#reset');
+		var descriptions = Object();
+		
+		
+		$(function() {
+
+			//Check if cross-domain call could be done
+			$.ajax({
+									type : 'POST',
+									headers : {
+										"Accept" : "application/sparql-results+json"
+									},
+									url : 'https://models.physiomeproject.org/pmr2_virtuoso_search',
+									crossDomain : true,
+									data : '',
+									dataType : 'text',
+									success : function(responseData,
+											textStatus, jqXHR) {
+										$('#errorpage').hide();
+										$('#main').show();
+									},
+									error : function(responseData, textStatus,
+											errorThrown) {
+
+									}
+								});
+
+			
+			$query.click(function(event) {
+						event.preventDefault();
+						var title = $('#title').val().trim();
+						var desc = $('#descinput').val().trim();
+						var pt = $('#plugintype').val()
+						var uinterface = $('#interface').val()
+						var license    = $('#license').val()
+						
+						var query = "PREFIX dcterms: <http://purl.org/dc/terms/>\n"
+								  + "PREFIX dcterms: <http://purl.org/dc/terms/>\n" 
+								  + "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n"
+								  + "PREFIX swo: <http://www.ebi.ac.uk/swo/>\n"
+								  + "PREFIX swo-x: <http://www.ebi.ac.uk/swo/EXTENSIONS/>\n" 
+
+								  + "SELECT ?title ?desc ?pluginType ?license ?iface\n"
+								  + "WHERE {\n"
+								  + "     GRAPH ?workspace {\n" 
+								  + "	           ?me dc:title ?title .\n"
+								  + "	           ?me dc:description ?desc .\n"
+								  + "	           ?me dcterms:conforms_to ?pluginType .\n"
+								  + "	           ?me swo:has_license ?license .\n"
+								  + "	           ?me swo:SWO_0004001 ?iface .\n"
+								  + "	           FILTER(regex(str(?title),\""+title+"\",\"i\") ) .\n"
+								  + "	           FILTER(regex(str(?desc),\""+desc+"\",\"i\") ) ";
+								  if(pt!=""){
+								  	query += ".\n	           FILTER(str(?pluginType) = \""+pt+"\") ";
+								  }
+								  if(license!=""){
+									query += ".\n	           FILTER(str(?license) = \""+license+"\") ";
+								  }
+								  if(uinterface!=""){
+									query += ".\n	           FILTER(str(?iface) = \""+uinterface+"\") \n";
+								  }
+
+								  query +=  "	      }}\n";
+
+						console.debug(query);
+						$.ajax({
+									type : 'POST',
+									headers : {
+										"Accept" : "application/sparql-results+json"
+									},
+									url : 'https://models.physiomeproject.org/pmr2_virtuoso_search',
+									crossDomain : true,
+									data : query,
+									dataType : 'text',
+									success : function(responseData,
+											textStatus, jqXHR) {
+										var json = JSON.parse(responseData);
+										rows = [];
+										descriptions = {};
+										var resA = json['results']['bindings'];
+										for(var i=0;i<resA.length;i++){
+											var res = resA[i];
+											var rtitle = res['title'].value;
+											var rtype = res['pluginType'].value;
+											var rlicense = res['license'].value;
+											var riface = res['iface'].value;
+
+											descriptions[i+1] = [res['desc'].value,res['workspace'].value];
+											if(rtype=='http://www.ebi.ac.uk/swo/EXTENSIONS/MAPClient-Plugin-API'){
+												rtype = 'MAPClient-Plugin'
+											}else if(rtype=='http://www.ebi.ac.uk/swo/EXTENSIONS/CTKPlugin-API'){
+												rtype = 'CTKPlugin-API'
+											} 
+											
+											if(riface=='http://www.ebi.ac.uk/swo/interface/SWO_5000003'){
+												riface = 'Graphical User Interface';
+											}else if(riface=='http://www.ebi.ac.uk/swo/interface/SWO_9000054'){
+												riface = 'Application Programming Interface';
+											}else if(riface=='http://www.ebi.ac.uk/swo/interface/SWO_9000053'){
+												riface = 'Command Line Interface';
+											}
+											
+											if(rlicense=='http://www.ebi.ac.uk/swo/license/SWO_1000005'){
+												rlicense = 'Apache license v2';
+											}else if(rlicense=='http://abi.auckland.ac.nz/license/MedTech'){
+												rlicense = 'MedTech CORE license';
+											}else if(rlicense=='http://www.ebi.ac.uk/swo/license/SWO_1000006'){
+												rlicense = 'Academic Free License';
+											}else if(rlicense=='http://www.ebi.ac.uk/swo/license/SWO_1000007'){
+												rlicense = 'Free BSD License';
+											}else if(rlicense=='http://www.ebi.ac.uk/swo/license/SWO_1000043'){
+												rlicense = 'GNU General Public License';
+											}else if(rlicense=='http://www.ebi.ac.uk/swo/license/SWO_1000055'){
+												rlicense = 'Mozilla Public License';
+											}else if(rlicense=='http://www.ebi.ac.uk/swo/license/SWO_1000002'){
+												rlicense = 'Proprietary';
+											}
+											rows.push({
+												id    : i+1,
+												title : rtitle,
+												type  : rtype,
+												license: rlicense,
+												iface : riface
+											});
+										}
+										$table.bootstrapTable('load', rows);
+										
+										var table = document.getElementById('table');
+										var rows = table.rows;
+										var l = rows.length;
+										for(var i=0; i <l; i++) {
+										    rows[i].setAttribute('data-toggle','modal');
+										    rows[i].setAttribute('data-id',i);
+										    rows[i].setAttribute('data-target','#descriptionPopup');
+										}
+										$('#tableContainer').show();
+										
+ 										 $("#table").find('tr[data-target]').on('click', function(){
+										     var getIdFromRow =$(this).data('id');
+									        //make your ajax call populate items or what even you need
+									        
+									        $('#pluginDetails').html('<p>'+descriptions[getIdFromRow][0]+'</p>');
+									        $('#pluginItems').html(descriptions[getIdFromRow][1]);
+									        $('#descriptionPopup').modal('show.bs');
+										 }); 
+										 
+										
+									},
+									error : function(responseData, textStatus,
+											errorThrown) {
+										$('#tableContainer').hide();
+										alert('POST failed.');
+									}
+								});
+
+						
+					});
+			$reset.click(function(event) {
+				$('#tableContainer').hide();
+			});
+					
+		});
+
+	</script>
+</body>
+</html>
