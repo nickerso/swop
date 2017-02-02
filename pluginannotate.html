@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>PMR Annotate Plugin </title>
+
+<meta name="author" content="Jagir Hussan, Auckland Bioengineering Institute">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.css" />
+
+</head>
+<body>
+
+	<div class="container-fluid" >
+		<div class="row">
+			<div class="col-md-12">
+				<div class="jumbotron">
+					<h2>Annotate Plugin</h2>
+					<p>Generate an rdf description to annotate a plugin to be input into PMR.</p>
+				</div>
+
+				<form class="form-horizontal" id="queryform">
+					<fieldset>
+
+						<!-- Form Name -->
+						<legend>Annotate</legend>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="title">Title</label>
+							<div class="col-md-4">
+								<input id="title" name="title" type="search" placeholder=""
+									class="form-control input-md">
+								<p class="help-block">Brief title to succinctly describe the plugin</p>
+							</div>
+						</div>
+
+						<!-- Text input-->
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="descinput">Description
+								</label>
+							<div class="col-md-4">
+								<textarea id="descinput" name="descinput" rows="4" cols="80"
+									placeholder="" class="form-control input-md"></textarea> <span
+									class="help-block">Describe the plugin to enable the target user to determine its features, use and constraints.</span>
+							</div>
+						</div>
+
+						<!-- Select Basic -->
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="plugintype">Plugin
+								Type</label>
+							<div class="col-md-4">
+								<select id="plugintype" name="plugintype" class="form-control">
+									<option value="1">MAP Client Plugin</option>
+									<option value="2">CTK Plugin</option>
+								</select>
+							</div>
+						</div>
+
+						<!-- Select Basic -->
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="Interface">User
+								Interface Type</label>
+							<div class="col-md-4">
+								<select id="interface" name="interface" class="form-control">
+									<option value="1">Graphical User Interface</option>
+									<option value="2">Application Programming Interface</option>
+									<option value="3">Command Line Interface</option>
+								</select>
+							</div>
+						</div>
+
+    					<div class="form-group">
+							<label class="col-md-4 control-label" for="inputtypes">Input
+								Type</label>
+							<div class="col-md-4">
+					      <select class="selectpicker form-control" id="inputtypes" name="inputtypes">
+					        <option value="">None</option>
+					        <option value="http://ns.p.hsyio.me/data_structures.owl#image_location">Image Location</option>
+					        <option value="http://ns.p.hsyio.me/data_structures.owl#point_cloud">Point Cloud</option>
+					        <option value="http://ns.p.hsyio.me/data_structures.owl#file_location">File Location</option>
+					      </select>
+					      </div>
+					    </div>
+
+    					<div class="form-group">
+							<label class="col-md-4 control-label" for="outputtypes">Output</label>
+							<div class="col-md-4">
+					      <select class="selectpicker form-control" id="outputtypes" name="outputtypes">
+					        <option value="">None</option>
+					        <option value="http://ns.p.hsyio.me/data_structures.owl#image_location">Image Location</option>
+					        <option value="http://ns.p.hsyio.me/data_structures.owl#point_cloud">Point Cloud</option>
+					        <option value="http://ns.p.hsyio.me/data_structures.owl#file_location">File Location</option>
+					      </select>
+					      </div>
+					    </div>
+					    
+					    <div class="form-group">
+					    	<label class="col-md-4 control-label" for="featuresList"></label>
+							<div class="col-md-4">
+							 <table class="table table-bordered table-hover" id="featuresList">
+				                <thead>
+				                    <tr >
+				                        <th class="text-center">
+				                            Features
+				                        </th>
+				                    </tr>
+				                </thead>
+				                <tbody>
+		    	            	    <tr id='addr0'>
+		        		                <td>
+		                			        <input type="text" name='feature0' id='feature0'  placeholder='Feature' class="form-control"/>
+		                        		</td>
+		                    		</tr>
+		                    		<tr id='addr1'></tr>
+		                		</tbody>
+		            		</table>			
+            				<a id="add_feature" class="btn btn-primary pull-left">Add Feature</a>
+            				<a id='delete_feature' class="pull-right btn btn-danger">Delete Feature</a>				
+					      </div>
+					    </div>
+
+						<!-- Select Basic -->
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="license">License
+								Type</label>
+							<div class="col-md-4">
+								<select id="license" name="license" class="form-control">
+									<option value="1">Apache license v2</option>
+									<option value="2">MedTech CORE license</option>
+									<option value="3">Academic Free License</option>
+									<option value="4">Free BSD License</option>
+									<option value="5">GNU General Public License</option>
+									<option value="6">Mozilla Public License</option>
+									<option value="7">Proprietary</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="sourceuri">Source Location</label>
+							<div class="col-md-4">
+								<input id="sourceuri" name="sourceuri" type="text" placeholder=""
+									class="form-control input-md">
+								<p class="help-block">Location of the source/binaries</p>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="orciduri">Author's ORCiD id</label>
+							<div class="col-md-4">
+								<input id="orciduri" name="orciduri" type="text" placeholder="http://orcid.org/0000-0001-8991-4703"
+									class="form-control input-md">
+								<p class="help-block">Provide the ORCid uri for the contact author.</p>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="docuri">Documentation url:</label>
+							<div class="col-md-4">
+								<input id="docuri" name="docuri" type="text" placeholder="http://rtfd.org/segmentationstep/index.html"
+									class="form-control input-md">
+								<p class="help-block">Location where additional documentation can be found.</p>
+							</div>
+						</div>
+						
+						<!-- Button (Double) -->
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="query"></label>
+							<div class="col-md-8">
+								<button id="generate" name="generate" class="btn btn-success">Generate RDF</button>
+								<button id="reset" name="reset" type=reset
+									class="btn btn-inverse">Reset</button>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<h3>Generated RDF</h3>
+				<textarea id="rdf" rows="20" cols="120" style="display: block;    margin-left: auto;    margin-right: auto;"></textarea>
+			</div>
+		</div>
+	</div>
+
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+	<script>
+		$generate = $('#generate'), $reset = $('#reset');
+		var descriptions = Object();
+		var featureCnt = 1;		
+		
+		var formatXml = function (xml) {
+	        var reg = /(>)\s*(<)(\/*)/g; // updated Mar 30, 2015
+	        var wsexp = / *(.*) +\n/g;
+	        var contexp = /(<.+>)(.+\n)/g;
+	        xml = xml.replace(reg, '$1\n$2$3').replace(wsexp, '$1\n').replace(contexp, '$1\n$2');
+	        var pad = 0;
+	        var formatted = '';
+	        var lines = xml.split('\n');
+	        var indent = 0;
+	        var lastType = 'other';
+	        // 4 types of tags - single, closing, opening, other (text, doctype, comment) - 4*4 = 16 transitions 
+	        var transitions = {
+	            'single->single': 0,
+	            'single->closing': -1,
+	            'single->opening': 0,
+	            'single->other': 0,
+	            'closing->single': 0,
+	            'closing->closing': -1,
+	            'closing->opening': 0,
+	            'closing->other': 0,
+	            'opening->single': 1,
+	            'opening->closing': 0,
+	            'opening->opening': 1,
+	            'opening->other': 1,
+	            'other->single': 0,
+	            'other->closing': -1,
+	            'other->opening': 0,
+	            'other->other': 0
+	        };
+
+	        for (var i = 0; i < lines.length; i++) {
+	            var ln = lines[i];
+	            var single = Boolean(ln.match(/<.+\/>/)); // is this line a single tag? ex. <br />
+	            var closing = Boolean(ln.match(/<\/.+>/)); // is this a closing tag? ex. </a>
+	            var opening = Boolean(ln.match(/<[^!].*>/)); // is this even a tag (that's not <!something>)
+	            var type = single ? 'single' : closing ? 'closing' : opening ? 'opening' : 'other';
+	            var fromTo = lastType + '->' + type;
+	            lastType = type;
+	            var padding = '';
+
+	            indent += transitions[fromTo];
+	            for (var j = 0; j < indent; j++) {
+	                padding += '\t';
+	            }
+	            if (fromTo == 'opening->closing')
+	                formatted = formatted.substr(0, formatted.length - 1) + ln + '\n'; // substr removes line break (\n) from prev loop
+	            else
+	                formatted += padding + ln + '\n';
+	        }
+
+	        return formatted;
+	    };
+		
+		
+		$(function() {
+
+			$("#add_feature").click(function(){
+			      $('#addr'+featureCnt).html("<td><input id='feature"+featureCnt+"' name='feature"+featureCnt+"' type='text' placeholder='Feature' class='form-control input-md'  /></td>");
+			      $('#featuresList').append('<tr id="addr'+(featureCnt+1)+'"></tr>');
+			      featureCnt++; 
+			  });
+			$("#delete_feature").click(function(){
+		         if(featureCnt>1){
+			         $("#addr"+(featureCnt-1)).html('');
+			         featureCnt--;
+		         }
+		     });
+			
+			$generate.click(function(event) {
+						event.preventDefault();
+						var title = $('#title').val().trim();
+						var desc = $('#descinput').val().trim();
+						var pt = $('#plugintype').val();
+						var uinterface = $('#interface').val();
+						var license    = $('#license').val();
+						var sourceLocation = $('#sourceuri').val();
+						var orcid = $('#orciduri').val();
+						var docuri = $('#docuri').val().trim();
+						var inputType = $('#inputtypes').val();
+						var outputType = $('#outputtypes').val();
+						
+						if(pt==1){
+							pt = 'MAPClient-Plugin-API';
+						}else if(pt==2){
+							pt = 'CTKPlugin-API';
+						}
+						if(uinterface==1){
+							uinterface = 'http://www.ebi.ac.uk/swo/interface/SWO_5000003';
+						}else if(uinterface==2){
+							uinterface = 'http://www.ebi.ac.uk/swo/interface/SWO_9000054';
+						}else if(uinterface==3){
+							uinterface = 'http://www.ebi.ac.uk/swo/interface/SWO_9000053';
+						}
+						
+						if(license==1){
+							license = 'http://www.ebi.ac.uk/swo/license/SWO_1000005';
+						}else if(license==2){
+							license = 'http://abi.auckland.ac.nz/license/MedTech';
+						}else if(license==3){
+							license = 'http://www.ebi.ac.uk/swo/license/SWO_1000006';
+						}else if(license==4){
+							license = 'http://www.ebi.ac.uk/swo/license/SWO_1000007';
+						}else if(license==5){
+							license = 'http://www.ebi.ac.uk/swo/license/SWO_1000043';
+						}else if(license==6){
+							license = 'http://www.ebi.ac.uk/swo/license/SWO_1000055';
+						}else if(license==7){
+							license = 'http://www.ebi.ac.uk/swo/license/SWO_1000002';
+						}
+						
+						var rdfheader = '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ' +
+										'xmlns:dc="http://purl.org/dc/elements/1.1/" '+
+										'xmlns:dcterms="http://purl.org/dc/terms/" '+
+										'xmlns:foaf="http://xmlns.com/foaf/0.1/" '+
+										'xmlns:swo="http://www.ebi.ac.uk/swo/" '+
+										'xmlns:swo-X="http://www.ebi.ac.uk/swo/EXTENSIONS/" '+
+										'xmlns:sio="http://semanticscience.org/resource/" '+
+										'xmlns:ds="http://ns.p.hsyio.me/data_structures.owl#" '+
+										'xmlns:doc="http://example.com/documentation-links/" '+
+										'>';
+										
+ 						var desc = rdfheader+'<rdf:Description rdf:about="'+sourceLocation+'">'+
+								   '<dc:title>'+title+'</dc:title>'+
+								   '<dc:description>'+desc+'</dc:description>'+
+								   '<swo:SWO_0004001 rdf:resource="'+uinterface+'"/>'+
+								   '<foaf:maker rdf:resource="'+orcid+'"/>'+
+								   '<dcterms:conforms_to rdf:resource="http://www.ebi.ac.uk/swo/EXTENSIONS/'+pt+'"/>';
+								   if(inputType.length>0)
+									desc += '<swo:SWO_0000086 rdf:resource="'+inputType+'"/>';
+								   if(outputType.length>0)
+									desc += '<swo:SWO_0000087 rdf:resource="'+outputType+'"/>';
+								
+								   var myfeatures = [];
+								   for(var i=0;i<featureCnt;i++){
+									   try{
+										   var txt = $('#feature'+i).val().trim();
+										   if(txt.length>0)
+											   myfeatures.push(txt)
+									   }catch(e){
+										   console.debug($('#feature'+i))
+										   console.debug(e)
+									   }
+										   
+								   }
+									
+								   if(myfeatures.length>0){
+									   desc +='	<sio:SIO_000586>'+
+											'<rdf:Bag>';
+									   for(var i=0;i<myfeatures.length;i++){
+										desc +='<rdf:li>'+myfeatures[i]+'</rdf:li>';
+									   }
+									   desc +=	'</rdf:Bag></sio:SIO_000586>';
+									}
+									desc +='<swo:has_license rdf:resource="'+license+'"/>';
+									
+									if(docuri.length>0)
+										desc +='<doc:Documentation rdf:resource="'+docuri+'"/>';
+									desc +='</rdf:Description></rdf:RDF>'; 
+						
+
+									$('#rdf').val(formatXml(desc));
+						
+					});
+			$reset.click(function(event) {
+				$('#rdf').val('');
+			});
+					
+		});
+
+	</script>
+</body>
+</html>
