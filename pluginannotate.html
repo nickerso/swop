@@ -140,7 +140,26 @@
 								</select>
 							</div>
 						</div>
+						
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="releasetype">Release 
+								Type</label>
+							<div class="col-md-4">
+								<select id="releasetype" name="releasetype" class="form-control">
+									<option value="swo:latest_release">Latest</option>
+									<option value="swo:obsolete">Obsolete</option>
+									<option value="swo:superceded">Superceded</option>
+								</select>
+							</div>
+						</div>
 
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="followedby">Followed by</label>
+							<div class="col-md-4">
+								<input id="followedby" name="followedby" type="text" placeholder="Enter the workspace uri for the release that follows this one."
+									class="form-control input-md">
+							</div>
+						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="sourceuri">Source Location</label>
 							<div class="col-md-4">
@@ -278,7 +297,9 @@
 						var docuri = $('#docuri').val().trim();
 						var inputType = $('#inputtypes').val();
 						var outputType = $('#outputtypes').val();
-						
+						var followedby = $('#followedby').val().trim();
+						var releasetype = $('#releasetype').val();
+				
 						if(pt==1){
 							pt = 'MAPClient-Plugin-API';
 						}else if(pt==2){
@@ -352,9 +373,11 @@
 									   desc +=	'</rdf:Bag></sio:SIO_000586>';
 									}
 									desc +='<swo:has_license rdf:resource="'+license+'"/>';
-									
+									desc +='<swo:has_declared_status rdf:resource="'+releasetype+'"/>';
 									if(docuri.length>0)
 										desc +='<doc:Documentation rdf:resource="'+docuri+'"/>';
+									if(followedby.length>0)
+										desc +='<swo:followed_by rdf:resource="'+followedby+'"/>';				
 									desc +='</rdf:Description></rdf:RDF>'; 
 						
 
