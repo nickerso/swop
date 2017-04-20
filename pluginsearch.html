@@ -39,10 +39,8 @@ Google Chrome users can install "Allow-Control-Allow-Origin: *" extension to hel
 					<button type="button" class="close" data-dismiss="alert"
 						aria-hidden="true">×</button>
 					<div>
-						<h3>
 							RDF for a new plugin can be created <a
 								href="./pmrpluginannotate.html">here</a>
-						</h3>
 					</div>
 
 				</div>
@@ -220,7 +218,7 @@ Google Chrome users can install "Allow-Control-Allow-Origin: *" extension to hel
 								  + "PREFIX swo: <http://www.ebi.ac.uk/swo/>\n"
 								  + "PREFIX swo-x: <http://www.ebi.ac.uk/swo/EXTENSIONS/>\n" 
 
-								  + "SELECT ?title ?desc ?pluginType ?license ?iface\n"
+								  + "SELECT ?title ?desc ?pluginType ?license ?iface ?me\n"
 								  + "WHERE {\n"
 								  + "     GRAPH ?workspace {\n" 
 								  + "	           ?me dc:title ?title .\n"
@@ -265,7 +263,7 @@ Google Chrome users can install "Allow-Control-Allow-Origin: *" extension to hel
 											var rlicense = res['license'].value;
 											var riface = res['iface'].value;
 
-											descriptions[i+1] = [res['desc'].value,res['workspace'].value];
+											descriptions[i+1] = [res['desc'].value,res['me'].value];
 											if(rtype=='http://www.ebi.ac.uk/swo/EXTENSIONS/MAPClient-Plugin-API'){
 												rtype = 'MAPClient-Plugin'
 											}else if(rtype=='http://www.ebi.ac.uk/swo/EXTENSIONS/CTKPlugin-API'){
