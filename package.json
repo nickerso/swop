@@ -1,0 +1,20 @@
+{
+  "name": "abi.swop",
+  "version": "1.0.0",
+  "description": "Semantic With Our Plugins on Docker",
+  "homepage": "https://github.com/ABI-Software/swop",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ABI-Software/swop"
+  },
+  "license": "Apache-2.0",
+  "author": "Andre, Jagir, and Hugh",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "connect": "latest",
+    "serve-static": "latest"
+  }
+}
