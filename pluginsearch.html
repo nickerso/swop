@@ -14,18 +14,7 @@
 </head>
 <body>
 
-<div class="container" id="errorpage" >
-<div class="span12">      
-<h3>Checking for Cross domain calling support by your browser!</h3>
-The service uses cross domain calls. If the current browser configuration does not allows for this, the search page will not load.
-<p>You need to change this security constraint, to use this service!</p>
-<p>
-Google Chrome users can install "Allow-Control-Allow-Origin: *" extension to help change this security constraint.
-</p>
-</div>
-</div>
-
-	<div class="container-fluid" id="main" style="display:none">
+	<div class="container-fluid" id="main">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="jumbotron">
@@ -182,27 +171,7 @@ Google Chrome users can install "Allow-Control-Allow-Origin: *" extension to hel
 		
 		$(function() {
 
-			//Check if cross-domain call could be done
-			$.ajax({
-									type : 'POST',
-									headers : {
-										"Accept" : "application/sparql-results+json"
-									},
-									url : 'https://models.physiomeproject.org/pmr2_virtuoso_search',
-									crossDomain : true,
-									data : '',
-									dataType : 'text',
-									success : function(responseData,
-											textStatus, jqXHR) {
-										$('#errorpage').hide();
-										$('#main').show();
-									},
-									error : function(responseData, textStatus,
-											errorThrown) {
-
-									}
-								});
-
+			var pmrSPARQLendPoint = "https://models.physiomeproject.org/pmr2_virtuoso_search";
 			
 			$query.click(function(event) {
 						event.preventDefault();
@@ -246,7 +215,7 @@ Google Chrome users can install "Allow-Control-Allow-Origin: *" extension to hel
 									headers : {
 										"Accept" : "application/sparql-results+json"
 									},
-									url : 'https://models.physiomeproject.org/pmr2_virtuoso_search',
+									url : pmrSPARQLendPoint,
 									crossDomain : true,
 									data : query,
 									dataType : 'text',
