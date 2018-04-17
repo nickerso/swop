@@ -172,6 +172,10 @@
 		$(function() {
 
 			var pmrSPARQLendPoint = "https://models.physiomeproject.org/pmr2_virtuoso_search";
+			var isCrossDomain = true;
+			
+			pmrSPARQLendPoint = "/api/pmr2_virtuoso_search";
+			isCrossDomain = false;
 			
 			$query.click(function(event) {
 						event.preventDefault();
@@ -216,7 +220,7 @@
 										"Accept" : "application/sparql-results+json"
 									},
 									url : pmrSPARQLendPoint,
-									crossDomain : true,
+									crossDomain : isCrossDomain,
 									data : query,
 									dataType : 'text',
 									success : function(responseData,
