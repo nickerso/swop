@@ -1,7 +1,7 @@
 {
   "name": "abi.swop",
   "version": "1.0.0",
-  "description": "Semantic With Our Plugins on Docker",
+  "description": "Semantic With Our Plugins",
   "homepage": "https://github.com/ABI-Software/swop",
   "repository": {
     "type": "git",
@@ -14,6 +14,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "latest"
+    "express": "latest",
+    "node-rest-client": "latest"
   }
 }
